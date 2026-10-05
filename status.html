@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Status</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+<div id="menu"></div>
+
+
+<div class="container">
+
+    <div class="box">
+
+        <h1>Current Status</h1>
+
+
+        <div id="status">
+            Loading...
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="config.js"></script>
+
+<script src="app.js"></script>
+
+
+<script>
+
+async function loadStatus() {
+
+    try {
+
+        const result =
+            await apiGet('status');
+
+
+        if (!result.success) {
+
+            throw new Error(
+                result.error
+            );
+
+        }
+
+
+        const status =
+            result.status;
+
+
+        const className =
+            status === 'newOffer'
+                ? 'new'
+                : 'none';
+
+
+        document
+            .getElementById(
+                'status'
+            )
+            .innerHTML = `
+
+                <div class="status ${className}">
+                    ${escapeHtml(status)}
+                </div>
+
+            `;
+
+
+    } catch (error) {
+
+        showError(error);
+
+    }
+
+}
+
+
+createMenu('status');
+
+loadStatus();
+
+
+// Automatically refresh status
+// every 2 seconds.
+
+setInterval(
+    loadStatus,
+    2000
+);
+
+</script>
+
+</body>
+
+</html>

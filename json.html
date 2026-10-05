@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Offer JSON</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+<div id="menu"></div>
+
+
+<div class="container">
+
+    <div class="box">
+
+        <h1>Offer JSON</h1>
+
+
+        <pre id="json">
+Loading...
+        </pre>
+
+    </div>
+
+</div>
+
+
+<script src="config.js"></script>
+
+<script src="app.js"></script>
+
+
+<script>
+
+async function loadJson() {
+
+    try {
+
+        const result =
+            await apiGet('json');
+
+
+        if (!result.success) {
+
+            throw new Error(
+                result.error
+            );
+
+        }
+
+
+        document
+            .getElementById(
+                'json'
+            )
+            .textContent =
+                result.json;
+
+
+    } catch (error) {
+
+        showError(error);
+
+    }
+
+}
+
+
+createMenu('json');
+
+loadJson();
+
+</script>
+
+</body>
+
+</html>

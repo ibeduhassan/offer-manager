@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Mate Manager</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+<div id="menu"></div>
+
+
+<div class="container">
+
+    <div id="message"></div>
+
+
+    <div class="box">
+
+        <h1 id="formTitle">
+            Add New Mate
+        </h1>
+
+
+        <form id="mateForm">
+
+            <input
+                type="hidden"
+                id="editIndex"
+                value=""
+            >
+
+
+            <label>
+                Mate Name
+            </label>
+
+
+            <input
+                type="text"
+                id="mateName"
+                placeholder="Enter mate name"
+                autocomplete="off"
+            >
+
+
+            <div class="buttons">
+
+                <button
+                    type="submit"
+                    class="primary"
+                    id="saveButton"
+                >
+                    Add Mate
+                </button>
+
+
+                <button
+                    type="button"
+                    class="gray"
+                    id="cancelButton"
+                    style="display:none"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <div class="box">
+
+        <h2>Mate List</h2>
+
+
+        <div
+            class="table-wrapper"
+            id="matesTable"
+        >
+            Loading...
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="config.js"></script>
+
+<script src="app.js"></script>
+
+
+<script>
+
+let allMates = [];
+
+
+// ============================================================
+// LOAD
+// ============================================================
+
+async function loadMates() {
+
+    try {
+
+        const result =
+            await apiGet('mates');
+
+
+        if (!result.success) {
+
+            throw new Error(
+                result.error
+            );
+
+        }
+
+
+        allMates =
+            result.mates || [];
+
+
+        renderMates();
+
+
+    } catch (error) {
+
+        showError(error);
+
+    }
+
+}
+
+
+// ============================================================
+// RENDER
+// ============================================================
+
+function renderMates() {
+
+    const container =
+        document.getElementById(
+            'matesTable'
+        );
+
+
+    if (allMates.length === 0) {
+
+        container.innerHTML =
+            '<div class="message">No mates available.</div>';
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>#</th>
+
+                    <th>Mate Name</th>
+
+                    <th>Edit</th>
+
+                    <th>Delete</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+    `;
+
+
+    allMates.forEach(
+        function(mate, index) {
+
+            html += `
+
+                <tr>
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(mate)}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="warning"
+                            onclick="editMate(${index})"
+                        >
+                            Edit
+                        </button>
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="danger"
+                            onclick="deleteMate(${index})"
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    container.innerHTML = html;
+
+}
+
+
+// ============================================================
+// ADD / UPDATE
+// ============================================================
+
+document
+    .getElementById('mateForm')
+    .addEventListener(
+        'submit',
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document
+                .getElementById(
+                    'mateName'
+                )
+                .value
+                .trim();
+
+
+            if (!name) {
+
+                alert(
+                    'Please enter a mate name.'
+                );
+
+                return;
+
+            }
+
+
+            const editIndex =
+                document
+                .getElementById(
+                    'editIndex'
+                )
+                .value;
+
+
+            try {
+
+                if (editIndex !== '') {
+
+                    await apiPost(
+                        'updateMate',
+                        {
+                            index: editIndex,
+                            mate: name
+                        }
+                    );
+
+                } else {
+
+                    await apiPost(
+                        'addMate',
+                        {
+                            mate: name
+                        }
+                    );
+
+                }
+
+
+                resetMateForm();
+
+                await loadMates();
+
+
+                showMessage(
+                    editIndex !== ''
+                        ? 'Mate updated successfully.'
+                        : 'Mate added successfully.'
+                );
+
+
+            } catch (error) {
+
+                showError(error);
+
+            }
+
+        }
+    );
+
+
+// ============================================================
+// EDIT
+// ============================================================
+
+function editMate(index) {
+
+    document
+        .getElementById(
+            'editIndex'
+        )
+        .value = index;
+
+
+    document
+        .getElementById(
+            'mateName'
+        )
+        .value =
+            allMates[index];
+
+
+    document
+        .getElementById(
+            'formTitle'
+        )
+        .textContent =
+            'Edit Mate';
+
+
+    document
+        .getElementById(
+            'saveButton'
+        )
+        .textContent =
+            'Update Mate';
+
+
+    document
+        .getElementById(
+            'cancelButton'
+        )
+        .style.display =
+            'inline-block';
+
+
+    document
+        .getElementById(
+            'mateName'
+        )
+        .focus();
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
+}
+
+
+// ============================================================
+// DELETE
+// ============================================================
+
+async function deleteMate(index) {
+
+    if (
+        !confirm(
+            'Are you sure you want to delete this mate?'
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        await apiPost(
+            'deleteMate',
+            {
+                index: index
+            }
+        );
+
+
+        await loadMates();
+
+
+        showMessage(
+            'Mate deleted successfully.'
+        );
+
+
+    } catch (error) {
+
+        showError(error);
+
+    }
+
+}
+
+
+// ============================================================
+// RESET
+// ============================================================
+
+function resetMateForm() {
+
+    document
+        .getElementById(
+            'mateForm'
+        )
+        .reset();
+
+
+    document
+        .getElementById(
+            'editIndex'
+        )
+        .value = '';
+
+
+    document
+        .getElementById(
+            'formTitle'
+        )
+        .textContent =
+            'Add New Mate';
+
+
+    document
+        .getElementById(
+            'saveButton'
+        )
+        .textContent =
+            'Add Mate';
+
+
+    document
+        .getElementById(
+            'cancelButton'
+        )
+        .style.display =
+            'none';
+
+}
+
+
+document
+    .getElementById(
+        'cancelButton'
+    )
+    .addEventListener(
+        'click',
+        resetMateForm
+    );
+
+
+// ============================================================
+// MESSAGE
+// ============================================================
+
+function showMessage(text) {
+
+    document
+        .getElementById(
+            'message'
+        )
+        .innerHTML = `
+
+            <div class="message success">
+                ${escapeHtml(text)}
+            </div>
+
+        `;
+
+}
+
+
+// ============================================================
+// MENU + LOAD
+// ============================================================
+
+createMenu('mates');
+
+loadMates();
+
+</script>
+
+</body>
+
+</html>

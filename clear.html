@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Clear Offers</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+<div id="menu"></div>
+
+
+<div class="container">
+
+    <div class="box">
+
+        <h1>Clear All Offers</h1>
+
+
+        <div class="message error">
+
+            <strong>Warning!</strong>
+
+            <p>
+                This will delete all offers.
+            </p>
+
+            <p>
+                The mate list will NOT be deleted.
+            </p>
+
+            <p>
+                Status will be changed to
+                <strong>noOffer</strong>.
+            </p>
+
+        </div>
+
+
+        <button
+            class="danger"
+            id="clearButton"
+        >
+            DELETE ALL OFFERS
+        </button>
+
+    </div>
+
+</div>
+
+
+<script src="config.js"></script>
+
+<script src="app.js"></script>
+
+
+<script>
+
+document
+    .getElementById(
+        'clearButton'
+    )
+    .addEventListener(
+        'click',
+        async function() {
+
+            const confirmed =
+                confirm(
+                    'Are you absolutely sure you want to delete ALL offers?'
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            try {
+
+                this.disabled = true;
+
+
+                await apiPost(
+                    'clearOffers'
+                );
+
+
+                alert(
+                    'All offers have been deleted. Status is now noOffer.'
+                );
+
+
+            } catch (error) {
+
+                showError(error);
+
+            } finally {
+
+                this.disabled = false;
+
+            }
+
+        }
+    );
+
+
+createMenu('clear');
+
+</script>
+
+</body>
+
+</html>

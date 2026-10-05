@@ -1,0 +1,347 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 25px;
+    background: #f4f6f8;
+    color: #222;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+
+/* =========================================================
+   TOP MENU
+   ========================================================= */
+
+.top-menu {
+    background: #222;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.top-menu-inner {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.menu-brand {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 14px 18px;
+    margin-right: 10px;
+}
+
+.menu-link {
+    color: #ddd;
+    text-decoration: none;
+    padding: 14px 18px;
+    display: block;
+}
+
+.menu-link:hover {
+    background: #444;
+    color: white;
+}
+
+.menu-link.active {
+    background: #1677ff;
+    color: white;
+}
+
+
+/* =========================================================
+   BOX
+   ========================================================= */
+
+.box {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+textarea,
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.mate-title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.mate-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.mate-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f0f2f4;
+    padding: 9px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button,
+.btn {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.primary {
+    background: #1677ff;
+    color: white;
+}
+
+.primary:hover {
+    background: #095fcf;
+}
+
+.warning {
+    background: #f0ad00;
+    color: white;
+}
+
+.danger {
+    background: #dc3545;
+    color: white;
+}
+
+.gray {
+    background: #777;
+    color: white;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+th,
+td {
+    border-bottom: 1px solid #ddd;
+    padding: 12px 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: #f1f3f5;
+}
+
+tr:hover td {
+    background: #fafafa;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.status {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 7px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.status.new {
+    background: #dff6df;
+    color: #167316;
+}
+
+.status.none {
+    background: #eee;
+    color: #666;
+}
+
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+.message {
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.success {
+    background: #dff6df;
+    color: #167316;
+}
+
+.error {
+    background: #ffe0e0;
+    color: #a00000;
+}
+
+
+/* =========================================================
+   JSON
+   ========================================================= */
+
+pre {
+    background: #222;
+    color: #eee;
+    padding: 20px;
+    border-radius: 8px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .top-menu-inner {
+        display: block;
+    }
+
+    .menu-brand {
+        display: block;
+    }
+
+    .menu-link {
+        border-top: 1px solid #444;
+    }
+
+}
+
+
+.top-menu-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.top-menu {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #222;
+    padding: 10px 15px;
+    transition: all 0.2s ease;
+}
+
+.top-menu.hidden {
+    display: none;
+}
+
+.menu-brand {
+    color: white;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.top-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+}
+
+.top-menu a:hover {
+    background: #444;
+}
+
+.top-menu a.active {
+    background: #990000;
+}
+
+/* Toggle button */
+.menu-toggle {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #990000;
+    color: white;
+
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.menu-toggle:hover {
+    background: #770000;
+}
